@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
+import { Link } from "react-router-dom";
+import { useNavigate }  from "react-router-dom";
+import Modal from 'react-modal';
 
 const site = 'https://todolist-api.hexschool.io'
 
-function SignIn(){
+function SignIn(props){
+
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [token,setToken] = useState('');
+    const navigate = useNavigate();
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSignIn = async() =>{
         try{
@@ -16,11 +24,17 @@ function SignIn(){
             password: password,
           })
           setToken('登入成功' + response.data.token);
+          navigate("/Todo");
+          setIsLoggedIn(true);
         }
         catch(e){
           setToken('登入失敗:' + e.message);
+          setError('登入失敗:' + e.message);
+          console.log('Error:', e);
+          setPopupVisible(true);
         }
       };
+      
     return (
         <div id="loginPage" className="bg-yellow">
       <div className="container loginPage vhContainer">
@@ -53,11 +67,15 @@ function SignIn(){
                    type="button"
                    onClick={handleSignIn}
                    value="登入"/>
-            <p><h2>Token:</h2> {token}</p>
-            <a className="formControls_btnLink" href="#signUpPage">註冊帳號</a>
+            <Link to="/SignUp" className="formControls_btnLink">註冊帳號</Link>
           </form>
         </div>
       </div>
+      <div className={`popup ${popupVisible ? 'show' : ''}`}>
+                <p>{error}</p>
+                <button onClick={() => setPopupVisible(false)}>確定</button>
+            </div>
+            
     </div>
       )
 }

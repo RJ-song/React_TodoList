@@ -54,5 +54,8 @@
   z-index: 1000;
 }
 .popup.show {
-  display: block; /* 當有 show 類名時顯示 */
+  display: block; 
+}
+.todoList_tab a.active {
+  font-weight: bold;
 }

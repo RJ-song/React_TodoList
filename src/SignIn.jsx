@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Link } from "react-router-dom";
 import { useNavigate }  from "react-router-dom";
 import Modal from 'react-modal';
+import { useToken } from './TokenContext.jsx';
 
 const site = 'https://todolist-api.hexschool.io'
 
@@ -11,11 +12,11 @@ function SignIn(props){
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const [token,setToken] = useState('');
     const navigate = useNavigate();
     const [popupVisible, setPopupVisible] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState('');
+    const { setToken } = useToken();
 
     const handleSignIn = async() =>{
         try{
@@ -23,9 +24,10 @@ function SignIn(props){
             email: email,
             password: password,
           })
-          setToken('登入成功' + response.data.token);
-          navigate("/Todo");
+          
           setIsLoggedIn(true);
+          setToken(response.data.token);
+          navigate("/Todo");
         }
         catch(e){
           setToken('登入失敗:' + e.message);
@@ -44,7 +46,7 @@ function SignIn(props){
         </div>
         <div>
           <form className="formControls" action="index.html">
-            <h2 className="formControls_txt">最實用的線上代辦事項服務</h2>
+            <h2 className="formControls_txt">最實用的線上待辦事項服務</h2>
             <label className="formControls_label" htmlFor="email">Email</label>
             <input className="formControls_input" 
                    value={email}

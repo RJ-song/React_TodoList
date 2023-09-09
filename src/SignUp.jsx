@@ -10,6 +10,7 @@ function SignUp(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [nickname,setNickname] = useState('');
+    const [message,setMessage] = useState('');
     const navigate = useNavigate();
     const [popupVisible, setPopupVisible] = useState(false);
     const [error, setError] = useState('');
